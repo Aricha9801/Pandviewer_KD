@@ -1,0 +1,10 @@
+*.js
+*.d.ts
+*.js.map
+
+./node_modules/
+./.idea/
+./build/
+
+.DS_Store
+node_modules

@@ -1,0 +1,225 @@
+/**
+App
+ */
+* {
+  margin: 0;
+  box-sizing: border-box;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+.App,
+#root {
+  height: 100vh;
+}
+
+.App {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+.mapHolder {
+  flex: 1.5;
+  border-top: #87ceeb 2px solid;
+  display: flex;
+
+}
+
+.mapHolderLoading {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+.goldMarker {
+  //Make sure this is drawn over other markers
+  z-index: 9999 !important;
+}
+/**
+Map
+ */
+#map {
+  flex: 1;
+}
+
+.marker {
+  text-align: center;
+}
+
+.popUpMouseOver {
+  text-align: center;
+  font-size: 90%;
+}
+
+.popUpMouseOver > .subTextMarker {
+  font-size: 80%;
+}
+
+/*
+Linker deel
+ */
+.brtInfo {
+  flex: 1;
+  display: flex;
+}
+
+.header {
+  margin: 1%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.header > img {
+  max-height: 3rem;
+  margin-left: 1%;
+  display: flex;
+  align-items: center;
+}
+
+.header > h1 {
+  color: black;
+}
+
+.headerEtc{
+  background-color: White;
+  height: 10%;
+  flex-direction: column;
+}
+
+.startText{
+  display: flex;
+  justify-content: center;
+  font-size: 120%;
+  margin: 1%;
+  margin-bottom: 2%;
+}
+
+.footer {
+  text-align: center;
+  margin: 1%;
+}
+
+ul {
+  padding: 0;
+}
+
+.badge {
+  display: inline-block;
+  margin-right: .6em;
+padding: .25em .4em;
+font-size: 75%;
+font-weight: 700;
+line-height: 1;
+text-align: center;
+white-space: nowrap;
+vertical-align: baseline;
+border-radius: .25rem;
+color: #fff;
+background-color: #6c757d;
+  a {
+    color: white;
+  }
+}
+.hoofdText {
+  font-size: 110%;
+  margin-bottom: 0%;
+}
+
+.subText {
+  font-size: 80%;
+}
+
+.objectScreen {
+  padding: 5%;
+}
+
+.objectScreen > h1 {
+  margin-bottom: 1%;
+}
+
+.objectScreen > h3 {
+  color: #2c84cb;
+  margin: 1% 0% 3%;
+}
+
+.namenTable {
+  margin-bottom: 2%;
+}
+
+.attributeSectionObjectScreen {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.attributeSectionObjectScreen td:last-child {
+  overflow-wrap: break-word;
+  width: 60%;
+}
+
+table {
+  word-break: break-word;
+}
+
+.dropDownItem * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1em;
+}
+
+.cogIcon {
+  padding-left: 1%;
+  float: left;
+}
+
+.toast-background {
+  border-radius: 10px;
+  background: white;
+  color: black;
+}
+
+.toast-progress-bar {
+  background: skyblue;
+}
+
+
+.contextMenuContainer{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  z-index: 500;
+  background: white;
+  text-align: left;
+  border-radius: 10px;
+}
+
+.contextMenuContainer > div > b {
+  font-size: 80%;
+}
+
+.contextMenuContainer > div > span {
+  font-size: 70%;
+}
+
+.contextMenuContainer > div{
+  white-space: nowrap;
+  display: block;
+  margin: 0;
+  padding : 10px 10px;
+  border-radius: 10px;
+
+  &:hover{
+    cursor: pointer;
+    padding: 9px 9px;
+    box-sizing: border-box;
+    border: #2c84cb 1px solid;
+  }
+}

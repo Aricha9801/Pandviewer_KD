@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "removeComments": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "listFiles": false,
+    "outDir": "./build/ts",
+    "experimentalDecorators": true,
+    "rootDir": ".",
+    "baseUrl": "."
+  },
+  "include": ["./typings-custom/main.d.ts","./src/**/*", "./webpack/**/*"],
+  "compileOnSave": false
+}
