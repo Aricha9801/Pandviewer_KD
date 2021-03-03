@@ -30,11 +30,11 @@ export type BindingValue =
 
 
 /**
- * Zet de sparql json resulaten om in een Resultaat.js array
+ * Convert the sparql json results into a Result.js array
  * @param results
  */
 export async function queryResourcesDescriptions(lat: string, lng: string, iris: string[]) : Promise<SingleObject[]>{
-    let res = await queryTriply(getDataByQuery(lat, lng, ));
+    let res = await runQuery(lat,lng,'100.0');
 
     //The sparql results for 1 iri may span multiple rows. So, group them
     const groupedByIri = _.groupBy(res.results.bindings, b => b.registratie.value); //s is the iri variable name
@@ -80,4 +80,23 @@ export async function queryTriply(query: string): Promise<SparqlResults> {
   }
 
   return JSON.parse(await result.text());
+}
+export async function runQuery(lat: string, long: string, precisie: string): Promise<SparqlResults> {
+    const sparqlApi = 'https://api.labs.kadaster.nl/queries/kadaster/bgt-ld-maps/run';
+    let sufUrl='?lat='+lat+'&long='+long+'&precisie='+precisie+'&page=1&pageSize=100';
+    let runApi=sparqlApi+sufUrl;
+    const result = await fetch(runApi, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/sparql-results+json"
+        },
+           
+    });
+    if (result.status > 300) {
+        throw new Error("Request with response " + result.status);
+    }
+
+    return JSON.parse(await result.text());
+
 }
