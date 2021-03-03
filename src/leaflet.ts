@@ -118,7 +118,7 @@ export function init(opts: {
       geometry: { type: "Point", coordinates: [latlng.lat, latlng.lng] },
       properties: feature.properties
     };
-    //dit is de pop up en de html die tevoorschijn komt.
+    // this is the popup and the html that will appear.
     marker.bindPopup(
       `<div class = "marker">
                       <b>${feature.properties.shapeTooltip}</b>
@@ -158,7 +158,7 @@ export function init(opts: {
     return marker;
   };
   /**
-   * Wordt aangeroepen elke keer als er een geojson object wordt getekend.
+   * Called every time a geojson object is drawn.
    **/
   const handleGeoJsonLayerDrawing = (feature: GeojsonFeature, layer: L.Layer) => {
     if (feature.geometry.type === "Point") return;

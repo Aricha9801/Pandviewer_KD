@@ -1,6 +1,5 @@
 import * as wellKnown from "wellknown";
 import _ from "lodash";
-import {getDataByQuery, sparqlApi} from "../Query";
 import {SingleObject} from "../reducer";
 export interface SparqlResults {
     head: Head;
@@ -59,28 +58,12 @@ export async function queryResourcesDescriptions(lat: string, lng: string, iris:
         .filter(i => !!i);
 }
 
-
 /**
- * Dit is een methode die het sparql endpoint van triply queriet.
- * @param query string met query
- * @returns {Promise<Response>}
+ * 
+ * @param lat 
+ * @param long 
+ * @param precisie 
  */
-export async function queryTriply(query: string): Promise<SparqlResults> {
-  const result = await fetch(sparqlApi, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/sparql-query",
-      Accept: "application/sparql-results+json"
-    },
-    body: query
-  });
-
-  if (result.status > 300) {
-    throw new Error("Request with response " + result.status);
-  }
-
-  return JSON.parse(await result.text());
-}
 export async function runQuery(lat: string, long: string, precisie: string): Promise<SparqlResults> {
     const sparqlApi = 'https://api.labs.kadaster.nl/queries/kadaster/bgt-ld-maps/run';
     let sufUrl='?lat='+lat+'&long='+long+'&precisie='+precisie+'&page=1&pageSize=100';
