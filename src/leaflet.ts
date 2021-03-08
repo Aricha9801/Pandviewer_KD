@@ -26,13 +26,17 @@ let markerGroup: any;
 export type FeatureProperties = Reducer.SingleObject;
 export type GeojsonFeature = GeoJson.Feature<GeoJson.Geometry, FeatureProperties>;
 
+/**
+ * 
+ * @param opts 
+ */
 export function init(opts: {
   onContextSearch: (context: Reducer.CoordinateQuery) => void;
   onZoomChange: (zoomLevel: number) => void;
   onClick: (el: Reducer.SingleObject) => void;
   onLayersClick: (info: Reducer.State["clickedLayer"]) => void;
 }) {
-  //opties van de kaart
+  //Options from the map
   map = L.map("map", {
     minZoom: 8,
     center: [52.20936, 5.2],
@@ -43,7 +47,7 @@ export function init(opts: {
     ]
   });
   (window as any).map = map; //for debugging
-  //zet de kaart tile layer aka de brt
+  // Put the Tile Layer aka de BRT card
   L.tileLayer(
     "https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png",
     {
@@ -52,11 +56,11 @@ export function init(opts: {
     }
   ).addTo(map);
 
-  //Wanneer je recht klikt op de kaart krijg dan alle locaties terug er om heen.
+  //When you click on the card, all locations get back around.
   map.on("contextmenu", e => {
     let latLong = (e as any).latlng;
 
-    //close pop ups van de kaart
+    //Close Pop Ups from the map
     map.closePopup();
 
 
@@ -70,10 +74,10 @@ export function init(opts: {
   map.doubleClickZoom.disable();
 
   /**
-   * De functie die de kaart aanroept elke keer als deze een marker wilt toevoegen.
+   * The function that the card calls every time it want to add a marker.
    **/
   const addMarker = (feature: GeojsonFeature, latlng: L.LatLng): any => {
-    //maak een marker aan
+    // Create a marker
     let marker = L.marker(latlng);
 
     marker.feature = {
@@ -84,34 +88,34 @@ export function init(opts: {
     markerGroup.addLayer(marker);
 
 
-    //methode die worden aangeroepen om de marker te openen
+    //Method that are called to open the marker
     let onHover = function(this: L.Marker) {
       this.openPopup();
       this.setIcon(Icons);
     }.bind(marker);
 
-    //methode die wordt aangeroepen om de marker te sluiten
+    //Method that is called to close the marker
     let onHoverOff = function(this: L.Marker) {
       this.closePopup();
       this.setIcon(DefaultIcon);
     }.bind(marker);
 
-    //wanneer je er op klikt ga naar die marker
+    //When you click on it Go to that marker
     marker.on("click", () => {
       opts.onClick(feature.properties as any);
     },marker.openPopup());
 
-    //wanneer je over de marker gaat laat de pop up zien
+    // When you cross the marker Let the pop up
     marker.on("mouseover", onHover);
 
-    //wanneer je er van af gaat laat het weg
+    // When you leave it from it
     marker.on("mouseout", onHoverOff);
   return marker;
 
   };
 
   const addMarkerForNonPoint = (feature: GeojsonFeature, latlng: L.LatLng) => {
-    //maak een marker aan
+    //Create a marker
     let marker = L.marker(latlng);
     marker.feature = {
       type: "Feature",
@@ -121,9 +125,9 @@ export function init(opts: {
     // this is the popup and the html that will appear.
     marker.bindPopup(
       `<div class = "marker">
-                      <b>${feature.properties.shapeTooltip}</b>
+                      <b>${feature.properties.address}</b>
                       <br/>
-                      <b><a href= ${feature.properties.registratie} target="_blank">Object in BGT</a></b>
+                      <b><a href= ${feature.properties.bag} target="_blank">Pand</a></b>
                       <div>
               `,
       {
@@ -132,24 +136,24 @@ export function init(opts: {
       }
     );
 
-    //methode die worden aangeroepen om de marker te openen
+    //Method that are called to open the marker
     let onHover = function(this: L.Marker) {
       this.openPopup();
       this.setIcon(Icons);
     }.bind(marker);
 
-    //methode die wordt aangeroepen om de marker te sluiten
+    //Method that is called to close the marker
     let onHoverOff = function(this: L.Marker) {
       this.setIcon(DefaultIcon);
     }.bind(marker);
 
-    //wanneer je over de marker gaat laat de pop up zien
+    //When you cross the marker Let the pop up see
     marker.on("mouseover", onHover);
 
-    //wanneer je er van af gaat laat het weg
+    //When you leave it from it
     marker.on("mouseout", onHoverOff);
 
-    //wanneer je er op klikt ga naar die marker
+    //When you click on it Go to that marker
     marker.on("click", function (this : L.Marker)  {
       opts.onClick(feature.properties);
       this.openPopup()
@@ -163,18 +167,18 @@ export function init(opts: {
   const handleGeoJsonLayerDrawing = (feature: GeojsonFeature, layer: L.Layer) => {
     if (feature.geometry.type === "Point") return;
 
-    //vindt eerst de center
+    //First find the center
     let latLong = getCenterGeoJson(feature);
 
-    //op deze center voeg een marker toe
+    //On this center add a marker
     markerGroup.addLayer(addMarkerForNonPoint(feature, latLong));
 
-    //als je er op klikt ga er dan naartoe
+    //If you click on it there then
     layer.on("click", (e: any) => {
-      //check of er meerdere lagen zijn
+      //Check if there are several layers
       let contains = getAllGeoJsonObjectContainingPoint(e.latlng.lng, e.latlng.lat);
 
-      //als er maar één laag is
+      //If only one is low
       if (contains.length < 2) {
         opts.onClick(feature.properties as any);
       } else {
@@ -186,20 +190,27 @@ export function init(opts: {
       }
     });
   };
-
+  /*
   geoJsonLayer = L.geoJSON([] as any, {
     onEachFeature: handleGeoJsonLayerDrawing,
     pointToLayer: addMarker as any,
     style: getStyle as any
   }).addTo(map);
+  */
 
-  //de groep voor de markers
+  geoJsonLayer = L.geoJSON([] as any, {
+    onEachFeature: handleGeoJsonLayerDrawing,
+    pointToLayer: addMarker as any,
+  }).addTo(map);
+  console.log(geoJsonLayer);
+
+  // the group for the markers
   markerGroup = (L as any).markerClusterGroup({
     showCoverageOnHover: false
   });
   map.addLayer(markerGroup);
 
-  //dit is voor mobiele applicatie. Als er gesleept wordt sluit dan het context menu.
+  //This is for mobile application.If dragged then closes the context menu.
   map.on("dragstart", () => {
 
   });
@@ -224,7 +235,7 @@ export function updateMap(opts: {
     geoJsonLayer.clearLayers();
 
 
-  // als er een geklikt resultaat is, render dan alleen deze
+  // If there is a clicking result, render only this one
   if (opts.selectedObject) {
     geoJsonLayer.addData(objectToGeojson(opts.selectedObject));
     map.fitBounds(L.featureGroup([geoJsonLayer, markerGroup]).getBounds() );
@@ -259,26 +270,27 @@ const getAllFeaturesFromLeaflet = () => {
 export function findMarkerByUrl(registratie: string) {
   return markerGroup.getLayers().find((l: any) => {
     const feature: GeojsonFeature = l.feature;
-    return feature.properties.registratie === registratie;
+    return feature.properties.bag === registratie;
   });
 }
 
 /**
- * Krijg alle geojson objecten die in de resultatenhouder zit waar dit punt in zit.
+ * Get all Geojson objects that are in the results holder where this item is in.
  */
 const getAllGeoJsonObjectContainingPoint = (lng: number, lat: number) => {
   return getAllFeaturesFromLeaflet().filter(res => {
     if (res.geometry.type !== "MultiPolygon" && res.geometry.type !== "Polygon") return false;
     let col = { type: "FeatureCollection", features: [res] };
-    //filter, als er -1 uitkomt bevindt het punt zich niet in de polygoon.
+    //Filter, when ER -1 exceeds, the point is not in the polygon.
     return inside.feature(col, [lng, lat]) !== -1;
   });
 };
 
 /**
- * Krijg de style voor een bepaalde feature
+ * Get the style for a certain feature
  * @param feature
  */
+/*
 const getStyle = (feature: { properties: Reducer.SingleObject }) => {
   if (feature.properties.shapeColor) {
     return {
@@ -286,6 +298,7 @@ const getStyle = (feature: { properties: Reducer.SingleObject }) => {
     };
   }
 };
+*/
 
 const getCenterGeoJson = (geojson: any): L.LatLng => {
   let centroid = turf.center(geojson);
@@ -326,7 +339,7 @@ const getCenterGeoJson = (geojson: any): L.LatLng => {
     }
   }
 
-  //krijg de lat en long
+  //Get the bar and lung
   let lon = centroid.geometry.coordinates[0];
   let lat = centroid.geometry.coordinates[1];
 
