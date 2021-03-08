@@ -127,6 +127,12 @@ export function init(opts: {
       `<div class = "marker">
                       <b>${feature.properties.address}</b>
                       <br/>
+                      <b>bouwjaar: ${feature.properties.bouwjaar}</b>
+                      <br/>
+                      <b>brtName: ${feature.properties.brtName}</b>
+                      <br/>
+                      <b>brtType: ${feature.properties.brtTypeName}</b>
+                      <br/>
                       <b><a href= ${feature.properties.bag} target="_blank">Pand</a></b>
                       <div>
               `,
