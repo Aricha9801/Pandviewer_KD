@@ -202,19 +202,17 @@ export function init(opts: {
       }
     });
   };
-  /*
-  geoJsonLayer = L.geoJSON([] as any, {
-    onEachFeature: handleGeoJsonLayerDrawing,
-    pointToLayer: addMarker as any,
-    style: getStyle as any
-  }).addTo(map);
-  */
+  
+  
 
   geoJsonLayer = L.geoJSON([] as any, {
     onEachFeature: handleGeoJsonLayerDrawing,
     pointToLayer: addMarker as any,
+    style: {
+      color: "LightSeaGreen"
+    },
   }).addTo(map);
-  console.log(geoJsonLayer);
+  
 
   // the group for the markers
   markerGroup = (L as any).markerClusterGroup({
