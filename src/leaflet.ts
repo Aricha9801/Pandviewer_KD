@@ -125,15 +125,19 @@ export function init(opts: {
     // this is the popup and the html that will appear.
     marker.bindPopup(
       `<div class = "marker">
+                      <b><a href= ${feature.properties.bag} target="_blank">BAG</a></b>
+                      <br/>
                       <b>${feature.properties.address}</b>
                       <br/>
-                      <b>bouwjaar: ${feature.properties.bouwjaar}</b>
+                      <b>Bouwjaar: ${feature.properties.bouwjaar}</b>
                       <br/>
-                      <b>brtName: ${feature.properties.brtName}</b>
+                      <b><a href= ${feature.properties.brt} target="_blank">BRT</a></b>
                       <br/>
-                      <b>brtType: ${feature.properties.brtTypeName}</b>
+                      <b>${feature.properties.brtName}</b>
                       <br/>
-                      <b><a href= ${feature.properties.bag} target="_blank">Pand</a></b>
+                      <b>Type: ${feature.properties.brtTypeName}</b>
+                      <br/>
+                      <b><a href= ${feature.properties.bgt} target="_blank">BGT</a></b>
                       <div>
               `,
       {
