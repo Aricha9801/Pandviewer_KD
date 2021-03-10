@@ -131,6 +131,8 @@ export function init(opts: {
                       <br/>
                       <b>Bouwjaar: ${feature.properties.bouwjaar}</b>
                       <br/>
+                      <b>Status: ${feature.properties.status}</b>
+                      <br/>
                       <b><a href= ${feature.properties.brt} target="_blank">BRT</a></b>
                       <br/>
                       <b>${feature.properties.brtName}</b>

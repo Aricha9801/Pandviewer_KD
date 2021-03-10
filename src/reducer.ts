@@ -51,6 +51,7 @@ export interface SingleObject {
   bagShape: any;
   address: string;
   bouwjaar: string;
+  status: string;
   brt:string;
   brtName:string;
   brtTypeName:string;

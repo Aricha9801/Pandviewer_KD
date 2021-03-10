@@ -45,6 +45,10 @@ export type BindingValue =
         value: string
     }
     | {
+        type: "literal"; 
+        value: string
+    }
+    | {
         type: "url"; 
         value: string
     }
@@ -87,6 +91,7 @@ export async function queryResourcesDescriptions(lat: string, lng: string, iris:
                 bagShape: geoJson,
                 address: firstBinding.address.value,
                 bouwjaar: firstBinding.bouwjaar.value,
+                status: firstBinding.status.value,
                 brt: firstBinding.brt.value,
                 brtName: firstBinding.brtName.value,
                 brtTypeName: firstBinding.brtTypeName.value,
@@ -109,7 +114,7 @@ export async function queryResourcesDescriptions(lat: string, lng: string, iris:
  * @param precisie 
  */
 export async function runQuery(lat: string, long: string): Promise<SparqlResults> {
-    const sparqlApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerTest/14/run';
+    const sparqlApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerTest/run';
     let sufUrl = '?lat=' + lat + '&long=' + long;
     let runApi = sparqlApi + sufUrl;
     const result = await fetch(runApi, {
