@@ -140,6 +140,8 @@ export function init(opts: {
                       <b>Type: ${feature.properties.brtTypeName}</b>
                       <br/>
                       <b><a href= ${feature.properties.bgt} target="_blank">BGT</a></b>
+                      <br/>
+                      <b>Status: ${feature.properties.bgtStatus}</b>
                       <div>
               `,
       {
@@ -212,7 +214,7 @@ export function init(opts: {
       color: "LightSeaGreen"
     },
   }).addTo(map);
-  
+
 
   // the group for the markers
   markerGroup = (L as any).markerClusterGroup({

@@ -56,6 +56,7 @@ export interface SingleObject {
   brtName:string;
   brtTypeName:string;
   bgt:string;
+  bgtStatus: string
 }
 
 

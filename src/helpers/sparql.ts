@@ -63,6 +63,10 @@ export type BindingValue =
     | {
         type: "url"; 
         value: string
+    }
+    | {
+        type: "literal"; 
+        value: string
     };
 
 
@@ -95,7 +99,8 @@ export async function queryResourcesDescriptions(lat: string, lng: string, iris:
                 brt: firstBinding.brt.value,
                 brtName: firstBinding.brtName.value,
                 brtTypeName: firstBinding.brtTypeName.value,
-                bgt: firstBinding.bgt.value
+                bgt: firstBinding.bgt.value,
+                bgtStatus: firstBinding.bgtStatus.value
                 /*
                 shapeTooltip: firstBinding.shapeTooltip.value,
                 types: _.uniq(bindings.map(b => b.type.value)),
