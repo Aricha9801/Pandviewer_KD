@@ -13,6 +13,10 @@ interface Props {
     values: Array<SingleObject>
   }
 }
+/**
+ * Popup component
+ * @param param0 
+ */
 const Popup:React.FC<Props> = ({handleClose,handleClick,options}) => {
   const windowSize = useWindowSize();
   const [divSize, setDivSize] = React.useState<{width:number, height:number}>(undefined)//used to be yMenu
@@ -37,18 +41,18 @@ const Popup:React.FC<Props> = ({handleClose,handleClick,options}) => {
       let top = options.y;
       let left = options.x;
 
-      //kijk of de component zal passen op het scherm
+      //See if the component will fit on the screen
       if ((windowSize.width - left) < divSize.width) {
-          //anders verplaats het naar link totdat het wel pasts
+          //Otherwise move it to link until it does fit
           left = windowSize.width - divSize.width;
       }
 
-      //zelfde met hoogte
+      //Same with height
       if ((windowSize.height - top) < divSize.height) {
           top = windowSize.height - divSize.height;
       }
 
-      // - 10 zodat de gebruiker altijd over de component heen hovert als deze geopend wordt
+      // - 10 so that the user always runs over the component when it is opened
       style = {
           position: 'absolute',
           top: `${top - 10}px`,
@@ -56,7 +60,7 @@ const Popup:React.FC<Props> = ({handleClose,handleClick,options}) => {
           display: "block",
       };
   } else {
-      //als iemand niet heeft geklikt laat deze component weg
+      // if someone didn't click omit this component
       style = {
           display: "none",
       };
@@ -71,10 +75,10 @@ const Popup:React.FC<Props> = ({handleClose,handleClick,options}) => {
                    e.preventDefault();
                }}>
       {options?.values.map(res => {
-          return (<div key={res.shapeTooltip + res.shapeColor} onClick={() => {
+          return (<div key={res.address + res.bouwjaar} onClick={() => {
             handleClick(res);
           }}>
-              <b>{res.shapeTooltip} </b>
+              <b>{res.address} </b>
 
           </div>);
       })}

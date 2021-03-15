@@ -37,12 +37,26 @@ export type Action =
   | { type: "zoomChange"; value: number }
 
 //Single element
+/*
 export interface SingleObject {
   registratie: string;
   shapeTooltip: string;
   types: string[];
   shape: any;
   shapeColor: string;
+}*/
+// Reset Single element
+export interface SingleObject {
+  bag: string;
+  bagShape: any;
+  address: string;
+  bouwjaar: string;
+  status: string;
+  brt:string;
+  brtName:string;
+  brtTypeName:string;
+  bgt:string;
+  bgtStatus: string
 }
 
 
