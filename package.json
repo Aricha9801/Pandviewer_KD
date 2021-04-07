@@ -39,7 +39,7 @@
       }
     },
     "build": {
-      "command": "rm -rf ./build && yarn run util:buildWebpackConfig && webpack --colors --display-error-details --config ./webpack/config.js",
+      "command": "yarn run util:buildWebpackConfig && webpack --colors --display-error-details --config ./webpack/config.js",
       "env": {
         "NODE_ENV": "production"
       }

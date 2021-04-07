@@ -16,4 +16,4 @@ yarn add typescript --dev
 yarn dev
 ```
 
-Go to http://localhost:4043 in your web browser.
+Go to http://localhost:4042 in your web browser.
