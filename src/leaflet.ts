@@ -55,6 +55,7 @@ export function init(opts: {
         'Kaartgegevens &copy; <a href="https://www.kadaster.nl/" target="_blank" rel = "noreferrer noopener">Kadaster</a> | <a href="https://www.verbeterdekaart.nl" target="_blank" rel = "noreferrer noopener">Verbeter de kaart</a> '
     }
   ).addTo(map);
+  
 
   //When you click on the card, all locations get back around.
   map.on("contextmenu", e => {
