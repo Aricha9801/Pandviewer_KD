@@ -122,6 +122,9 @@ const App: React.FC = () => {
                     uit de Basisregistratie Grootschalige Topografie, Basisregistratie Adressen en Gebouwen en de Basisregistratie Topografie.</p>
                 </div>
             </div>
+            <div className="searchBar">
+                <button>search test</button>
+            </div>
             <div className={state.isFetching ? "mapHolderLoading" : "mapHolder"}
                  onContextMenu={e => e.preventDefault()}>
                 <Loader loading={state.isFetching}/>

@@ -64,6 +64,11 @@ export interface CoordinateQuery {
   lat: string;
   lng: string;
 }
+
+export interface TextQuery {
+  postcode: string;
+  houseNumber: string;
+}
 export const reducer: React.Reducer<State, Action> = immer.produce((state: State, action: Action) => {
   console.log("%c " + action.type, "color: #ff00e6");
   switch (action.type) {
@@ -73,6 +78,7 @@ export const reducer: React.Reducer<State, Action> = immer.produce((state: State
       state.searchResults = [];
       state.selectedObject = undefined;
       return state;
+    
     case "coordinate_search_error":
       state.isFetching = false;
       return state;
