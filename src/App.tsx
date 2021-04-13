@@ -72,6 +72,21 @@ const App: React.FC = () => {
     }, [state.coordinateQuery]);
 
     /**
+     * Trigger search
+     //  */
+     React.useEffect(() => {
+        if (state.textSearchQuery) {
+            sBP.getFromTextSearch(state.textSearchQuery.postcode, state.textSearchQuery.houseNumber)
+                .then(res => {
+                    dispatch({type: "search_success", results: res as any});
+                })
+                .catch(() => {
+                    dispatch({type: "search_error"});
+                });
+        }
+    }, [state.textSearchQuery]);
+
+    /**
      * Update leaflet when search results or selection changes
      */
     React.useEffect(() => {
@@ -123,7 +138,9 @@ const App: React.FC = () => {
                 </div>
             </div>
             <div className="searchBar">
-                <button>search test</button>
+                <input></input>
+                <input></input>
+                <button onClick={() => dispatch({type: "search_start",value:{postcode:'7545BA', houseNumber: '1'}})}>search test</button>
             </div>
             <div className={state.isFetching ? "mapHolderLoading" : "mapHolder"}
                  onContextMenu={e => e.preventDefault()}>

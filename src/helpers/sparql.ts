@@ -177,7 +177,7 @@ export async function runQuery(lat: string, long: string): Promise<SparqlResults
 }
 export async function searchQuery(postcode: string, housenumber: string): Promise<SparqlResults> {
     const searchApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerSearch/run';
-    let sufUrl = '?postcode=' + postcode + '&huisnummer==' + housenumber;
+    let sufUrl = '?postcode=' + postcode + '&huisnummer=' + housenumber;
     let runApi = searchApi + sufUrl;
     const result = await fetch(runApi, {
         method: "GET",

@@ -2,8 +2,10 @@ import React from "react";
 import * as immer from "immer";
 
 export interface State {
-  clickedLayer: {x: number, y: number, values: Array<SingleObject >}
+  clickedLayer: { x: number, y: number, values: Array<SingleObject> }
   coordinateQuery: CoordinateQuery;
+  searchText: { x: string, y: string, values: Array<SingleObject> } //add new state
+  textSearchQuery: TextQuery; //add new state
   isFetching: boolean; // Fetching results from API
   mapClustered: boolean;
   searchResults: Array<SingleObject>;
@@ -13,6 +15,8 @@ export interface State {
 export const initialState: State = {
   clickedLayer: undefined,
   coordinateQuery: undefined,
+  searchText: undefined,
+  textSearchQuery: undefined,
   isFetching: false,
   mapClustered: true,
   searchResults: [],
@@ -21,19 +25,19 @@ export const initialState: State = {
 };
 
 export type Action =
-  | { type: "clickLayer", value: {x: number, y:number, values:Array<SingleObject > }}
+  | { type: "clickLayer", value: { x: number, y: number, values: Array<SingleObject> } }
   | { type: "closeClickedLayer" }
   | { type: "coordinate_search_error" }
   | { type: "coordinate_search_start"; value: CoordinateQuery }
   | { type: "coordinate_search_success"; results: State["searchResults"] }
   | { type: "reset" }
   | { type: "resetSelectedObject" }
-  | { type: "search_error"; value: string }
-  | { type: "search_start"; value: string }
-  | { type: "search_success"; value: string; results: State["searchResults"] }
+  | { type: "search_error" } //text search error
+  | { type: "search_start"; value: TextQuery } //text search start
+  | { type: "search_success"; results: State["searchResults"] } //text search start
   | { type: "selectObject"; value: SingleObject }
   | { type: "setMapClustered"; value: boolean }
-  | { type: "typeSearch"; value: string }
+  | { type: "textSearch", value: { x: string, y: string, values: Array<SingleObject> } } //text search
   | { type: "zoomChange"; value: number }
 
 //Single element
@@ -52,10 +56,10 @@ export interface SingleObject {
   address: string;
   bouwjaar: string;
   status: string;
-  brt:string;
-  brtName:string;
-  brtTypeName:string;
-  bgt:string;
+  brt: string;
+  brtName: string;
+  brtTypeName: string;
+  bgt: string;
   bgtStatus: string
 }
 
@@ -78,11 +82,23 @@ export const reducer: React.Reducer<State, Action> = immer.produce((state: State
       state.searchResults = [];
       state.selectedObject = undefined;
       return state;
-    
     case "coordinate_search_error":
       state.isFetching = false;
       return state;
     case "coordinate_search_success":
+      state.isFetching = false;
+      state.searchResults = action.results;
+      return state;
+    case "search_start": //new case
+      state.isFetching = true;
+      state.textSearchQuery = action.value;
+      state.searchResults = [];
+      state.selectedObject = undefined;
+      return state;
+    case "search_error": //new case
+      state.isFetching = false;
+      return state;
+    case "search_success": //new case
       state.isFetching = false;
       state.searchResults = action.results;
       return state;
