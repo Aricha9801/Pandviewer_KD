@@ -14,6 +14,7 @@ import * as Reducer from "./reducer";
 import "./styles.scss";
 import Loader from "./components/Loader";
 import LayerSelectorPopup from "./components/LayerSelectorPopup";
+import {useState} from 'react';
 
 
 /**
@@ -72,6 +73,21 @@ const App: React.FC = () => {
     }, [state.coordinateQuery]);
 
     /**
+     * Trigger search
+     //  */
+     React.useEffect(() => {
+        if (state.textSearchQuery) {
+            sBP.getFromTextSearch(state.textSearchQuery.postcode, state.textSearchQuery.houseNumber)
+                .then(res => {
+                    dispatch({type: "search_success", results: res as any});
+                })
+                .catch(() => {
+                    dispatch({type: "search_error"});
+                });
+        }
+    }, [state.textSearchQuery]);
+
+    /**
      * Update leaflet when search results or selection changes
      */
     React.useEffect(() => {
@@ -108,8 +124,11 @@ const App: React.FC = () => {
         });
     }, [state.mapClustered]);
 
+    const [pcode, setPcode]=useState('7311KZ')
+    const [hnum, setHnum]=useState('110');
     return (
         <section className="App">
+            <div className="headerInfo">
             <div className="headerEtc">
                 <div onClick={() => dispatch({type: "reset"})}>
                     <div className="header">
@@ -118,15 +137,29 @@ const App: React.FC = () => {
                     </div>
                 </div>
                 <div className="startText">
-                    <p>Ontdek de gebouwen van Nederland door op de kaart van Nederland te klikken met de rechtermuisknop. Er zal informatie zichtbaar worden over het gebouw. Deze informatie komt
+                    <p>Ontdek de gebouwen van Nederland door met de rechtermuisknop op de kaart van Nederland te klikken of te zoeken op postcode en huisnummer. Er zal informatie zichtbaar worden over het gebouw. Deze informatie komt
                     uit de Basisregistratie Grootschalige Topografie, Basisregistratie Adressen en Gebouwen en de Basisregistratie Topografie.</p>
                 </div>
+            </div>
+            <div className="searchBar">
+                <div className="infoContainer">
+                    <div className="postcodeContainer">
+                        <span>Postcode</span>
+                        <input value={pcode} onChange={e => setPcode(e.target.value)}></input>
+                    </div>
+                    <div className="huisnummerContainer">
+                        <span>Huisnummer</span>
+                        <input value={hnum} onChange={e => setHnum(e.target.value)} ></input>
+                    </div>
+                </div>
+                <button onClick={() => dispatch({type: "search_start",value:{postcode:pcode, houseNumber: hnum}})}>search</button>
+            </div>
             </div>
             <div className={state.isFetching ? "mapHolderLoading" : "mapHolder"}
                  onContextMenu={e => e.preventDefault()}>
                 <Loader loading={state.isFetching}/>
                 <div id="map"/>
-            </div>
+            </div>           
             <LayerSelectorPopup
                 handleClose={() => dispatch({type: "closeClickedLayer"})}
                 handleClick={el => {
@@ -135,7 +168,6 @@ const App: React.FC = () => {
                 options={state.clickedLayer}
             />
             <ToastContainer/>
-            
         </section>
     );
 };
