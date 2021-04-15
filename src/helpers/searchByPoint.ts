@@ -22,12 +22,12 @@ export async function getFromCoordinates(lat : string, lng: string) {
  * @param housenumber 
  * @returns 
  */
-export async function getFromTextSearch(postcode : string, housenumber: number) {
+export async function getFromTextSearch(postcode : string, housenumber: string) {
 
   const results = await searchQuery(postcode,housenumber);
   //console.log(await results.results.bindings.map(b => b.bag.value));
-  console.log(await results);
+  //console.log(await results);
   //It stops here
-  console.log (await searchResourcesDescriptions(postcode, housenumber, results.results.bindings.map(b => b.bag.value)));
+  //console.log (await searchResourcesDescriptions(postcode, housenumber, results.results.bindings.map(b => b.bag.value)));
   return await searchResourcesDescriptions(postcode, housenumber, results.results.bindings.map(b => b.bag.value));
 }

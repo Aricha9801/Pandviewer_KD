@@ -124,8 +124,8 @@ const App: React.FC = () => {
         });
     }, [state.mapClustered]);
 
-    const [pcode, setPcode]=useState('7511AE')
-    const [hnum, setHnum]=useState('4');
+    const [pcode, setPcode]=useState('7311KZ')
+    const [hnum, setHnum]=useState('110');
     return (
         <section className="App">
             <div className="headerInfo">
@@ -149,7 +149,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="huisnummerContainer">
                         <span>Huisnummer</span>
-                        <input value={hnum} onChange={e => setHnum(e.target.value)}></input>
+                        <input value={hnum} onChange={e => setHnum(e.target.value)} ></input>
                     </div>
                 </div>
                 <button onClick={() => dispatch({type: "search_start",value:{postcode:pcode, houseNumber: hnum}})}>search</button>
