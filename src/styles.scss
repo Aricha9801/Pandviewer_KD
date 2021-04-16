@@ -97,12 +97,18 @@ Linker deel
   display:flex;
   justify-content: space-around;
   margin-top: 5%;
-  outline: #00889E;
+  margin-left:2%;
+  margin-right:2%;
+  height:90px;
+  background-color:#afdde4;
+  border-width: 1px;
 }
 
 .infoContainer{
   display:flex;
   justify-content: space-around;
+  margin-bottom: 8%;
+  
 }
 
 .postcodeContainer{
@@ -116,12 +122,12 @@ Linker deel
   font-size: 110%;
   flex:0 1 100%;
   margin-left:15%;
-  margin-bottom:2.5%;
+  margin-bottom:1%;
 }
 
 .postcodeContainer input{
   width:70%;
-  height:75%;
+  //height:60%;
   flex:0 1 auto;
   margin-left:15%;
 }
@@ -135,23 +141,26 @@ Linker deel
 .huisnummerContainer span {
   font-weight: 600;
   font-size: 110%;
+  
   flex:0 1 100%;
   margin-left:5%;
-  margin-bottom:2.5%;
+  margin-bottom:1%;
 }
 
 .huisnummerContainer input {
   width:70%;
-  height:75%;
+  //height:60%;
   flex:0 1 auto;
   margin-left:5%;
 }
 
 .searchBar button{
-  flex:0 1 10%;
-  height:75%;
-  margin-top: 5.5%;
+  flex:0 0.5 10%;
   margin-right: 6%;
+  height:32%;
+  //height:40%;
+  margin-bottom: 8%;
+  margin-top:auto;
   background-color: #FFFFFF;
   color:#00889E;
   border-width:1px;
