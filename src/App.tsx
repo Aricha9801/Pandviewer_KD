@@ -145,11 +145,11 @@ const App: React.FC = () => {
                 <div className="infoContainer">
                     <div className="postcodeContainer">
                         <span>Postcode</span>
-                        <input value={pcode} onChange={e => setPcode(e.target.value)}></input>
+                        <input placeholder={pcode} onChange={e => setPcode(e.target.value)}></input>
                     </div>
                     <div className="huisnummerContainer">
                         <span>Huisnummer</span>
-                        <input value={hnum} onChange={e => setHnum(e.target.value)} ></input>
+                        <input placeholder={hnum} onChange={e => setHnum(e.target.value)} ></input>
                     </div>
                 </div>
                 <button onClick={() => dispatch({type: "search_start",value:{postcode:pcode, houseNumber: hnum}})}>search</button>
