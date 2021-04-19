@@ -138,7 +138,7 @@ const App: React.FC = () => {
                 </div>
                 <div className="startText">
                     <p>Ontdek de gebouwen van Nederland door met de rechtermuisknop op de kaart van Nederland te klikken of te zoeken op postcode en huisnummer. Er zal informatie zichtbaar worden over het gebouw. Deze informatie komt
-                    uit de Basisregistratie Grootschalige Topografie, Basisregistratie Adressen en Gebouwen en de Basisregistratie Topografie.</p>
+                    uit de Basisregistratie Grootschalige Topografie (BGT), Basisregistratie Adressen en Gebouwen (BAG) en de Basisregistratie Topografie (BRT).</p>
                 </div>
             </div>
             <div className="searchBar">
@@ -153,6 +153,9 @@ const App: React.FC = () => {
                     </div>
                 </div>
                 <button onClick={() => dispatch({type: "search_start",value:{postcode:pcode, houseNumber: hnum}})}>search</button>
+            </div>
+            <div className="footer">
+            <a href="https://data.labs.kadaster.nl/kadaster/knowledge-graph" target="_blank" rel="noreferrer noopener">Lees meer over de Kadaster Knowledge Graph</a>
             </div>
             </div>
             <div className={state.isFetching ? "mapHolderLoading" : "mapHolder"}
