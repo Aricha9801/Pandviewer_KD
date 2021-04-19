@@ -23,17 +23,25 @@ body,
   flex-direction: row;
 }
 
+@media (max-width:530px) {
+  .App {
+    display:flex;
+    flex-direction: column;
+  }
+}
+
 .mapHolder {
-  flex: 0 1 67%;
-  border: 3px solid #87ceeb;
-  border-top: 4px solid #87ceeb;
+  flex: 2 1 0;
+  border: 2px solid #87ceeb;
+  //border-top: 4px solid #87ceeb;
   display: flex;
 
 }
 
 .mapHolderLoading {
-  flex: 1.5;
+  flex: 2 1 0;
   display: flex;
+  border: 2px solid #87ceeb;
   flex-direction: column;
 }
 
@@ -65,7 +73,7 @@ Map
 Linker deel
  */
  .headerInfo {
-  flex: 0 1 33%;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
@@ -95,7 +103,7 @@ Linker deel
 }
 .searchBar{
   display:flex;
-  justify-content: space-around;
+  justify-content: center;
   margin-top: 5%;
   margin-left:3%;
   margin-right:4%;
@@ -110,58 +118,55 @@ Linker deel
 
 .infoContainer{
   display:flex;
-  justify-content: space-around;
+  flex:7 1 0;
+  justify-content: flex-start;
   margin-bottom: 6%;
+  margin-right:5%;
   
 }
 
 .postcodeContainer{
-  flex:0 1 45%;
+  flex:1;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 5%;
 }
 
 .postcodeContainer span {
   font-weight: 600;
   font-size: 110%;
-  flex:0 1 100%;
+  flex:1;
   margin-left:15%;
-  margin-bottom:1%;
-  margin-top:4%;
 }
 
 .postcodeContainer input{
-  width:70%;
-  //height:60%;
-  flex:0 1 auto;
+  width:65%;
+  flex:1;
   margin-left:15%;
 }
 
 .huisnummerContainer{
-  flex:0 1 40%;
+  flex:1;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 5%;
 }
 
 .huisnummerContainer span {
   font-weight: 600;
   font-size: 110%;
-  
-  flex:0 1 100%;
-  margin-left:5%;
-  margin-bottom:1%;
-  margin-top:4%;
+  flex:1;
 }
 
 .huisnummerContainer input {
-  width:70%;
-  //height:60%;
-  flex:0 1 auto;
-  margin-left:5%;
+  width:65%;
+  flex:1;
 }
 
 .searchBar button{
-  flex:0 0.5 10%;
+  flex:1;
   margin-right: 6%;
   height:35%;
   max-height: 31px;
