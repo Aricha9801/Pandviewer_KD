@@ -23,7 +23,7 @@ import {useState} from 'react';
 import KadasterImg from "./assets/LogoKadaster.png";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import * as sBP from "./helpers/searchByPoint";
+import * as sBP from "./helpers/searchResult";
 
 
 let _debug: any = (window as any)._debug || {};
@@ -73,7 +73,7 @@ const App: React.FC = () => {
     }, [state.coordinateQuery]);
 
     /**
-     * Trigger search
+     * Trigger text search
      //  */
      React.useEffect(() => {
         if (state.textSearchQuery) {
@@ -124,8 +124,10 @@ const App: React.FC = () => {
         });
     }, [state.mapClustered]);
 
+    //Define useState of postcode and housenumber, and set the default value.
     const [pcode, setPcode]=useState('7311KZ')
     const [hnum, setHnum]=useState('110');
+
     return (
         <section className="App">
             <div className="headerInfo">

@@ -31,13 +31,15 @@ export type GeojsonFeature = GeoJson.Feature<GeoJson.Geometry, FeatureProperties
  * @param opts 
  */
 export function init(opts: {
-  onContextSearch: (context: Reducer.CoordinateQuery) => void;
+  onContextSearch: (context: Reducer.CoordinateQuery) => void; 
   onZoomChange: (zoomLevel: number) => void;
   onClick: (el: Reducer.SingleObject) => void;
   onLayersClick: (info: Reducer.State["clickedLayer"]) => void;
 }) {
 
   //Define basemap layers
+  
+  //brtKaart layer
   const brtKaart = L.tileLayer(
     "https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png",
     {
@@ -45,19 +47,22 @@ export function init(opts: {
         'Kaartgegevens &copy; <a href="https://www.kadaster.nl/" target="_blank" rel = "noreferrer noopener">Kadaster</a> | <a href="https://www.verbeterdekaart.nl" target="_blank" rel = "noreferrer noopener">Verbeter de kaart</a> '
     }
   );
-
+  //luchtfoto layer
   const luchtfotorgb = L.tileLayer(
     "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/2020_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg",
     {
       attribution:
-        'Landelijke Voorziening Beeldmateriaal &copy; <a href="https://www.pdok.nl/" target="_blank" rel = "noreferrer noopener">PDOk</a> | <a href="https://www.pdok.nl/introductie/-/article/luchtfoto-pdok" target="_blank" rel = "noreferrer noopener">Luchtfoto</a> '
+        'Landelijke Voorziening Beeldmateriaal &copy; <a href="https://www.pdok.nl/" target="_blank" rel = "noreferrer noopener">PDOK</a> '
     }
   );
+
+  //Group the basemap layers
   let baseMaps = {
     "Luchtfoto's": luchtfotorgb,
     "BRT Achtergrondkaart": brtKaart
   };
-  //Options from the map
+  
+  //Define the map
   map = L.map("map", {
     minZoom: 8,
     center: [52.20936, 5.2],
@@ -66,19 +71,19 @@ export function init(opts: {
       [56, 10],
       [49, 0]
     ],
-    layers: [brtKaart, luchtfotorgb]
+    layers: [brtKaart, luchtfotorgb] //include two baseMap layers
   });
   (window as any).map = map; //for debugging
   
   //Add layer control
   L.control.layers(baseMaps).addTo(map);
-  //When you click on the card, all locations get back around.
+
+  //When you right click on the card, all locations get back around.
   map.on("contextmenu", e => {
     let latLong = (e as any).latlng;
 
     //Close Pop Ups from the map
     map.closePopup();
-
 
     opts.onContextSearch({
       lng: latLong.lat.toString(),
