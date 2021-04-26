@@ -5,6 +5,7 @@ import { SingleObject } from "../reducer";
 //Sparql query api
 const coordSearchApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerTest/run'; //The coordinate search APi
 const textSearchApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerSearch/run'; //The text search api
+
 //Declaration of strtucture of the result
 export interface SparqlResults {
     head: Head;

@@ -4,7 +4,7 @@ import * as immer from "immer";
 export interface State {
   clickedLayer: { x: number, y: number, values: Array<SingleObject> }
   coordinateQuery: CoordinateQuery;
-  textSearchQuery: TextQuery; //add new state
+  textSearchQuery: TextQuery; 
   isFetching: boolean; // Fetching results from API
   mapClustered: boolean;
   searchResults: Array<SingleObject>;

@@ -1,5 +1,9 @@
 # Pandviewer
 
+For the documentation check [here](docs/docs.md).
+
+To install and run the app, python and Visual Studio 2019 are required. And yarn need to be installed globally.
+
 ## Install dependencies
 
 ```sh
