@@ -16,7 +16,7 @@ The user can search for a building by filling in the postcode and housenumber, a
 After getting the building object, the user can check the addition information of that building by move the mouse over the marker. After that a pop up with information from BAG, BGT and BRT dataset will appear. And the pop up is with hyperlinks to object in dataset.
 
 ## Dataset
-In order to get information of buildings, three datasets are be involved:
+In order to get information of buildings, three datasets are involved:
 
 -	Basic registration Large-scale Topography (BGT)
 -	Basic Registration Addresses and Buildings (BAG)
