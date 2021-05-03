@@ -4,8 +4,7 @@ import * as immer from "immer";
 export interface State {
   clickedLayer: { x: number, y: number, values: Array<SingleObject> }
   coordinateQuery: CoordinateQuery;
-  searchText: { x: string, y: string, values: Array<SingleObject> } //add new state
-  textSearchQuery: TextQuery; //add new state
+  textSearchQuery: TextQuery; 
   isFetching: boolean; // Fetching results from API
   mapClustered: boolean;
   searchResults: Array<SingleObject>;
@@ -15,7 +14,6 @@ export interface State {
 export const initialState: State = {
   clickedLayer: undefined,
   coordinateQuery: undefined,
-  searchText: undefined,
   textSearchQuery: undefined,
   isFetching: false,
   mapClustered: true,
@@ -37,19 +35,9 @@ export type Action =
   | { type: "search_success"; results: State["searchResults"] } //text search start
   | { type: "selectObject"; value: SingleObject }
   | { type: "setMapClustered"; value: boolean }
-  | { type: "textSearch", value: { x: string, y: string, values: Array<SingleObject> } } //text search
   | { type: "zoomChange"; value: number }
 
 //Single element
-/*
-export interface SingleObject {
-  registratie: string;
-  shapeTooltip: string;
-  types: string[];
-  shape: any;
-  shapeColor: string;
-}*/
-// Reset Single element
 export interface SingleObject {
   bag: string;
   bagShape: any;
@@ -76,6 +64,7 @@ export interface TextQuery {
 export const reducer: React.Reducer<State, Action> = immer.produce((state: State, action: Action) => {
   console.log("%c " + action.type, "color: #ff00e6");
   switch (action.type) {
+    //coordinate search module
     case "coordinate_search_start":
       state.isFetching = true;
       state.coordinateQuery = action.value;
@@ -89,19 +78,22 @@ export const reducer: React.Reducer<State, Action> = immer.produce((state: State
       state.isFetching = false;
       state.searchResults = action.results;
       return state;
-    case "search_start": //new case
+    
+    //text search module
+    case "search_start":
       state.isFetching = true;
       state.textSearchQuery = action.value;
       state.searchResults = [];
       state.selectedObject = undefined;
       return state;
-    case "search_error": //new case
+    case "search_error":
       state.isFetching = false;
       return state;
-    case "search_success": //new case
+    case "search_success":
       state.isFetching = false;
       state.searchResults = action.results;
       return state;
+
     case "reset":
       return initialState;
     case "setMapClustered":

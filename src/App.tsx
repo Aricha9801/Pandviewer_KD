@@ -23,7 +23,7 @@ import {useState} from 'react';
 import KadasterImg from "./assets/LogoKadaster.png";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import * as sBP from "./helpers/searchByPoint";
+import * as sBP from "./helpers/searchResult";
 
 
 let _debug: any = (window as any)._debug || {};
@@ -73,7 +73,7 @@ const App: React.FC = () => {
     }, [state.coordinateQuery]);
 
     /**
-     * Trigger search
+     * Trigger text search
      //  */
      React.useEffect(() => {
         if (state.textSearchQuery) {
@@ -124,8 +124,10 @@ const App: React.FC = () => {
         });
     }, [state.mapClustered]);
 
+    //Define useState of postcode and housenumber, and set the default value.
     const [pcode, setPcode]=useState('7311KZ')
     const [hnum, setHnum]=useState('110');
+
     return (
         <section className="App">
             <div className="headerInfo">
@@ -138,21 +140,24 @@ const App: React.FC = () => {
                 </div>
                 <div className="startText">
                     <p>Ontdek de gebouwen van Nederland door met de rechtermuisknop op de kaart van Nederland te klikken of te zoeken op postcode en huisnummer. Er zal informatie zichtbaar worden over het gebouw. Deze informatie komt
-                    uit de Basisregistratie Grootschalige Topografie, Basisregistratie Adressen en Gebouwen en de Basisregistratie Topografie.</p>
+                    uit de Basisregistratie Grootschalige Topografie (BGT), Basisregistratie Adressen en Gebouwen (BAG) en de Basisregistratie Topografie (BRT).</p>
                 </div>
             </div>
             <div className="searchBar">
                 <div className="infoContainer">
                     <div className="postcodeContainer">
                         <span>Postcode</span>
-                        <input value={pcode} onChange={e => setPcode(e.target.value)}></input>
+                        <input placeholder={pcode} onChange={e => setPcode(e.target.value)}></input>
                     </div>
                     <div className="huisnummerContainer">
                         <span>Huisnummer</span>
-                        <input value={hnum} onChange={e => setHnum(e.target.value)} ></input>
+                        <input placeholder={hnum} onChange={e => setHnum(e.target.value)} ></input>
                     </div>
                 </div>
                 <button onClick={() => dispatch({type: "search_start",value:{postcode:pcode, houseNumber: hnum}})}>search</button>
+            </div>
+            <div className="footer">
+            <a href="https://data.labs.kadaster.nl/kadaster/knowledge-graph" target="_blank" rel="noreferrer noopener">Lees meer over de Kadaster Knowledge Graph</a>
             </div>
             </div>
             <div className={state.isFetching ? "mapHolderLoading" : "mapHolder"}

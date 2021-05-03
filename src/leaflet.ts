@@ -31,12 +31,38 @@ export type GeojsonFeature = GeoJson.Feature<GeoJson.Geometry, FeatureProperties
  * @param opts 
  */
 export function init(opts: {
-  onContextSearch: (context: Reducer.CoordinateQuery) => void;
+  onContextSearch: (context: Reducer.CoordinateQuery) => void; 
   onZoomChange: (zoomLevel: number) => void;
   onClick: (el: Reducer.SingleObject) => void;
   onLayersClick: (info: Reducer.State["clickedLayer"]) => void;
 }) {
-  //Options from the map
+
+  //Define basemap layers
+  
+  //brtKaart layer
+  const brtKaart = L.tileLayer(
+    "https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png",
+    {
+      attribution:
+        'Kaartgegevens &copy; <a href="https://www.kadaster.nl/" target="_blank" rel = "noreferrer noopener">Kadaster</a> | <a href="https://www.verbeterdekaart.nl" target="_blank" rel = "noreferrer noopener">Verbeter de kaart</a> '
+    }
+  );
+  //luchtfoto layer
+  const luchtfotorgb = L.tileLayer(
+    "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/2020_ortho25/EPSG:3857/{z}/{x}/{y}.jpeg",
+    {
+      attribution:
+        'Landelijke Voorziening Beeldmateriaal &copy; <a href="https://www.pdok.nl/" target="_blank" rel = "noreferrer noopener">PDOK</a> '
+    }
+  );
+
+  //Group the basemap layers
+  let baseMaps = {
+    "Luchtfoto's": luchtfotorgb,
+    "BRT Achtergrondkaart": brtKaart
+  };
+  
+  //Define the map
   map = L.map("map", {
     minZoom: 8,
     center: [52.20936, 5.2],
@@ -44,26 +70,20 @@ export function init(opts: {
     maxBounds: [
       [56, 10],
       [49, 0]
-    ]
+    ],
+    layers: [brtKaart, luchtfotorgb] //include two baseMap layers
   });
   (window as any).map = map; //for debugging
-  // Put the Tile Layer aka de BRT card
-  L.tileLayer(
-    "https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png",
-    {
-      attribution:
-        'Kaartgegevens &copy; <a href="https://www.kadaster.nl/" target="_blank" rel = "noreferrer noopener">Kadaster</a> | <a href="https://www.verbeterdekaart.nl" target="_blank" rel = "noreferrer noopener">Verbeter de kaart</a> '
-    }
-  ).addTo(map);
   
+  //Add layer control
+  L.control.layers(baseMaps).addTo(map);
 
-  //When you click on the card, all locations get back around.
+  //When you right click on the card, all locations get back around.
   map.on("contextmenu", e => {
     let latLong = (e as any).latlng;
 
     //Close Pop Ups from the map
     map.closePopup();
-
 
     opts.onContextSearch({
       lng: latLong.lat.toString(),
@@ -90,13 +110,13 @@ export function init(opts: {
 
 
     //Method that are called to open the marker
-    let onHover = function(this: L.Marker) {
+    let onHover = function (this: L.Marker) {
       this.openPopup();
       this.setIcon(Icons);
     }.bind(marker);
 
     //Method that is called to close the marker
-    let onHoverOff = function(this: L.Marker) {
+    let onHoverOff = function (this: L.Marker) {
       this.closePopup();
       this.setIcon(DefaultIcon);
     }.bind(marker);
@@ -104,14 +124,14 @@ export function init(opts: {
     //When you click on it Go to that marker
     marker.on("click", () => {
       opts.onClick(feature.properties as any);
-    },marker.openPopup());
+    }, marker.openPopup());
 
     // When you cross the marker Let the pop up
     marker.on("mouseover", onHover);
 
     // When you leave it from it
     marker.on("mouseout", onHoverOff);
-  return marker;
+    return marker;
 
   };
 
@@ -152,13 +172,13 @@ export function init(opts: {
     );
 
     //Method that are called to open the marker
-    let onHover = function(this: L.Marker) {
+    let onHover = function (this: L.Marker) {
       this.openPopup();
       this.setIcon(Icons);
     }.bind(marker);
 
     //Method that is called to close the marker
-    let onHoverOff = function(this: L.Marker) {
+    let onHoverOff = function (this: L.Marker) {
       this.setIcon(DefaultIcon);
     }.bind(marker);
 
@@ -169,7 +189,7 @@ export function init(opts: {
     marker.on("mouseout", onHoverOff);
 
     //When you click on it Go to that marker
-    marker.on("click", function (this : L.Marker)  {
+    marker.on("click", function (this: L.Marker) {
       opts.onClick(feature.properties);
       this.openPopup()
     });
@@ -205,14 +225,14 @@ export function init(opts: {
       }
     });
   };
-  
-  
+
+
 
   geoJsonLayer = L.geoJSON([] as any, {
     onEachFeature: handleGeoJsonLayerDrawing,
     pointToLayer: addMarker as any,
     style: {
-      color: "LightSeaGreen"
+      color: "#FF8C00"
     },
   }).addTo(map);
 
@@ -243,19 +263,19 @@ export function updateMap(opts: {
   searchResults?: Reducer.State["searchResults"];
   updateZoom: boolean;
 }) {
-    map.closePopup();
-    markerGroup.clearLayers();
-    geoJsonLayer.clearLayers();
+  map.closePopup();
+  markerGroup.clearLayers();
+  geoJsonLayer.clearLayers();
 
 
   // If there is a clicking result, render only this one
   if (opts.selectedObject) {
     geoJsonLayer.addData(objectToGeojson(opts.selectedObject));
-    map.fitBounds(L.featureGroup([geoJsonLayer, markerGroup]).getBounds() );
+    map.fitBounds(L.featureGroup([geoJsonLayer, markerGroup]).getBounds());
   } else if (opts.searchResults.length) {
-        let features = getAllObjectsAsFeature(opts.searchResults) as any
-          geoJsonLayer.addData(features);
-        map.fitBounds(L.featureGroup([geoJsonLayer, markerGroup]).getBounds());
+    let features = getAllObjectsAsFeature(opts.searchResults) as any
+    geoJsonLayer.addData(features);
+    map.fitBounds(L.featureGroup([geoJsonLayer, markerGroup]).getBounds());
   } else if (opts.updateZoom) {
     centerMap();
   }

@@ -23,17 +23,25 @@ body,
   flex-direction: row;
 }
 
+@media (max-width:530px) {
+  .App {
+    display:flex;
+    flex-direction: column;
+  }
+}
+
 .mapHolder {
-  flex: 0 1 67%;
-  border: 3px solid #87ceeb;
-  border-top: 4px solid #87ceeb;
+  flex: 2 1 0;
+  border: 2px solid #87ceeb;
+  //border-top: 4px solid #87ceeb;
   display: flex;
 
 }
 
 .mapHolderLoading {
-  flex: 1.5;
+  flex: 2 1 0;
   display: flex;
+  border: 2px solid #87ceeb;
   flex-direction: column;
 }
 
@@ -65,7 +73,7 @@ Map
 Linker deel
  */
  .headerInfo {
-  flex: 0 1 33%;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
@@ -95,63 +103,76 @@ Linker deel
 }
 .searchBar{
   display:flex;
-  justify-content: space-around;
+  justify-content: center;
   margin-top: 5%;
-  outline: #00889E;
+  margin-left:3%;
+  margin-right:4%;
+  height:100px;
+  background-color:#cfeaf0;
+  //border-width: 10px;
+  //border-color: rgb(0, 0, 0);
+  border:1px solid #b3b3b3;
+  border-radius: 5px;
+
 }
 
 .infoContainer{
   display:flex;
-  justify-content: space-around;
+  flex:7 1 0;
+  justify-content: flex-start;
+  margin-bottom: 6%;
+  margin-right:5%;
+  
 }
 
 .postcodeContainer{
-  flex:0 1 45%;
+  flex:1;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 5%;
 }
 
 .postcodeContainer span {
   font-weight: 600;
   font-size: 110%;
-  flex:0 1 100%;
+  flex:1;
   margin-left:15%;
-  margin-bottom:2.5%;
 }
 
 .postcodeContainer input{
-  width:70%;
-  height:75%;
-  flex:0 1 auto;
+  width:65%;
+  flex:1;
   margin-left:15%;
 }
 
 .huisnummerContainer{
-  flex:0 1 40%;
+  flex:1;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 5%;
 }
 
 .huisnummerContainer span {
   font-weight: 600;
   font-size: 110%;
-  flex:0 1 100%;
-  margin-left:5%;
-  margin-bottom:2.5%;
+  flex:1;
 }
 
 .huisnummerContainer input {
-  width:70%;
-  height:75%;
-  flex:0 1 auto;
-  margin-left:5%;
+  width:65%;
+  flex:1;
 }
 
 .searchBar button{
-  flex:0 1 10%;
-  height:75%;
-  margin-top: 5.5%;
+  flex:1;
   margin-right: 6%;
+  height:35%;
+  max-height: 31px;
+  //height:40%;
+  margin-bottom: 6%;
+  margin-top:auto;
   background-color: #FFFFFF;
   color:#00889E;
   border-width:1px;
@@ -180,7 +201,9 @@ Linker deel
 
 .footer {
   text-align: center;
-  margin: 1%;
+  margin-top: auto;
+  margin-bottom: 2%;
+  //margin: 1%;
 }
 
 ul {

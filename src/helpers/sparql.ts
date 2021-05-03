@@ -1,6 +1,12 @@
 import * as wellKnown from "wellknown";
 import _ from "lodash";
 import { SingleObject } from "../reducer";
+
+//Sparql query api
+const coordSearchApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerTest/run'; //The coordinate search APi
+const textSearchApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerSearch/run'; //The text search api
+
+//Declaration of strtucture of the result
 export interface SparqlResults {
     head: Head;
     results: {
@@ -13,20 +19,7 @@ export interface Head {
 export interface Binding {
     [varname: string]: BindingValue;
 }
-/*
-export type BindingValue =
-    | {
-    type: "uri";
-    value: string;
-}
-    | {
-    type: "literal";
-    value: string;
-    "xml:lang"?: string;
-    datatype?: string;
-}
-    | { type: "bnode"; value: string };
-*/
+
 export type BindingValue =
     | {
         type: "uri";
@@ -71,8 +64,8 @@ export type BindingValue =
 
 
 /**
- * Convert the sparql json results into a Result.js array
- * @param results
+ * Convert the sparql json results of the coordinate query into a Result.js array
+ *  Convert the geometry format from wkt to geoJson.
  */
 export async function queryResourcesDescriptions(lat: string, lng: string, iris: string[]): Promise<SingleObject[]> {
     let res = await runQuery(lat, lng);
@@ -85,7 +78,7 @@ export async function queryResourcesDescriptions(lat: string, lng: string, iris:
             if (!bindings) return undefined;
             const firstBinding = bindings[0];
             let geoJson: any;
-
+            // In this case there is only one record of the result, so it uses 'firstBinding'. In other case it should be modified.
             if (firstBinding.bagShape) {
                 let wktJson = bindings[0].bagShape.value;
                 geoJson = wellKnown.parse(wktJson);
@@ -101,17 +94,14 @@ export async function queryResourcesDescriptions(lat: string, lng: string, iris:
                 brtTypeName: firstBinding.brtTypeName.value,
                 bgt: firstBinding.bgt.value,
                 bgtStatus: firstBinding.bgtStatus.value
-                /*
-                shapeTooltip: firstBinding.shapeTooltip.value,
-                types: _.uniq(bindings.map(b => b.type.value)),
-                shape: geoJson,
-                shapeColor: bindings.filter(b => !!b.shapeColor?.value)[0]?.shapeColor?.value
-                */
             };
         })
         .filter(i => !!i);
 }
 
+/**
+ * Convert the sparql json results of the text search into a Result.js array
+ */
 export async function searchResourcesDescriptions(postcode: string, housenumber: string, iris: string[]): Promise<SingleObject[]> {
     let res = await searchQuery(postcode, housenumber);
 
@@ -139,27 +129,19 @@ export async function searchResourcesDescriptions(postcode: string, housenumber:
                 brtTypeName: firstBinding.brtTypeName.value,
                 bgt: firstBinding.bgt.value,
                 bgtStatus: firstBinding.bgtStatus.value
-                /*
-                shapeTooltip: firstBinding.shapeTooltip.value,
-                types: _.uniq(bindings.map(b => b.type.value)),
-                shape: geoJson,
-                shapeColor: bindings.filter(b => !!b.shapeColor?.value)[0]?.shapeColor?.value
-                */
             };
         })
         .filter(i => !!i);
 }
 
 /**
- * 
+ * Get the coordinate query result from the api
  * @param lat 
  * @param long 
- * @param precisie 
  */
 export async function runQuery(lat: string, long: string): Promise<SparqlResults> {
-    const sparqlApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerTest/run';
-    let sufUrl = '?lat=' + lat + '&long=' + long;
-    let runApi = sparqlApi + sufUrl;
+    let sufUrl = '?lat=' + lat + '&long=' + long; //The appendix with parameters
+    let runApi = coordSearchApi + sufUrl;
     const result = await fetch(runApi, {
         method: "GET",
         headers: {
@@ -175,10 +157,16 @@ export async function runQuery(lat: string, long: string): Promise<SparqlResults
     return JSON.parse(await result.text());
 
 }
+
+/**
+ * Get the text search result from the api
+ * @param postcode 
+ * @param housenumber 
+ * @returns 
+ */
 export async function searchQuery(postcode: string, housenumber: string): Promise<SparqlResults> {
-    const searchApi = 'https://api.labs.kadaster.nl/queries/jiarong-li/PandviewerSearch/run';
     let sufUrl = '?postcode=' + postcode + '&huisnummer=' + housenumber;
-    let runApi = searchApi + sufUrl;
+    let runApi = textSearchApi + sufUrl;
     const result = await fetch(runApi, {
         method: "GET",
         headers: {
