@@ -10,7 +10,7 @@ import * as GeoJson from "geojson";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles.scss";
 import * as Reducer from "./reducer";
-import { objectToGeojson, getAllObjectsAsFeature } from "./helpers/utils";
+import { getAllObjectsAsFeature } from "./helpers/utils";
 import { DefaultIcon, Icons } from "./components/Icons";
 /**
  * Assets
@@ -33,8 +33,6 @@ export type GeojsonFeature = GeoJson.Feature<GeoJson.Geometry, FeatureProperties
 export function init(opts: {
   onContextSearch: (context: Reducer.CoordinateQuery) => void; 
   onZoomChange: (zoomLevel: number) => void;
-  onClick: (el: Reducer.SingleObject) => void;
-  onLayersClick: (info: Reducer.State["clickedLayer"]) => void;
 }) {
 
   //Define basemap layers
@@ -122,9 +120,7 @@ export function init(opts: {
     }.bind(marker);
 
     //When you click on it Go to that marker
-    marker.on("click", () => {
-      opts.onClick(feature.properties as any);
-    }, marker.openPopup());
+    
 
     // When you cross the marker Let the pop up
     marker.on("mouseover", onHover);
@@ -189,10 +185,7 @@ export function init(opts: {
     marker.on("mouseout", onHoverOff);
 
     //When you click on it Go to that marker
-    marker.on("click", function (this: L.Marker) {
-      opts.onClick(feature.properties);
-      this.openPopup()
-    });
+    
 
     return marker;
   };
@@ -208,25 +201,8 @@ export function init(opts: {
     //On this center add a marker
     markerGroup.addLayer(addMarkerForNonPoint(feature, latLong));
 
-    //If you click on it there then
-    layer.on("click", (e: any) => {
-      //Check if there are several layers
-      let contains = getAllGeoJsonObjectContainingPoint(e.latlng.lng, e.latlng.lat);
-
-      //If only one is low
-      if (contains.length < 2) {
-        opts.onClick(feature.properties as any);
-      } else {
-        opts.onLayersClick({
-          x: e.originalEvent.pageX,
-          y: e.originalEvent.pageY,
-          values: contains.reverse().map(res => res.properties)
-        });
-      }
-    });
+       
   };
-
-
 
   geoJsonLayer = L.geoJSON([] as any, {
     onEachFeature: handleGeoJsonLayerDrawing,
@@ -259,7 +235,7 @@ export function centerMap() {
   map.setView([52.20936, 5.2], 8);
 }
 export function updateMap(opts: {
-  selectedObject?: Reducer.SingleObject;
+  //selectedObject?: Reducer.SingleObject;
   searchResults?: Reducer.State["searchResults"];
   updateZoom: boolean;
 }) {
@@ -268,11 +244,7 @@ export function updateMap(opts: {
   geoJsonLayer.clearLayers();
 
 
-  // If there is a clicking result, render only this one
-  if (opts.selectedObject) {
-    geoJsonLayer.addData(objectToGeojson(opts.selectedObject));
-    map.fitBounds(L.featureGroup([geoJsonLayer, markerGroup]).getBounds());
-  } else if (opts.searchResults.length) {
+  if (opts.searchResults.length) {
     let features = getAllObjectsAsFeature(opts.searchResults) as any
     geoJsonLayer.addData(features);
     map.fitBounds(L.featureGroup([geoJsonLayer, markerGroup]).getBounds());
@@ -296,28 +268,6 @@ export function toggleClustering(toggle: boolean) {
   }
 }
 
-const getAllFeaturesFromLeaflet = () => {
-  return geoJsonLayer.getLayers().map((l: any) => l.feature) as GeojsonFeature[];
-};
-
-export function findMarkerByUrl(registratie: string) {
-  return markerGroup.getLayers().find((l: any) => {
-    const feature: GeojsonFeature = l.feature;
-    return feature.properties.bag === registratie;
-  });
-}
-
-/**
- * Get all Geojson objects that are in the results holder where this item is in.
- */
-const getAllGeoJsonObjectContainingPoint = (lng: number, lat: number) => {
-  return getAllFeaturesFromLeaflet().filter(res => {
-    if (res.geometry.type !== "MultiPolygon" && res.geometry.type !== "Polygon") return false;
-    let col = { type: "FeatureCollection", features: [res] };
-    //Filter, when ER -1 exceeds, the point is not in the polygon.
-    return inside.feature(col, [lng, lat]) !== -1;
-  });
-};
 
 /**
  * Get the style for a certain feature

@@ -13,7 +13,6 @@ import * as Reducer from "./reducer";
  */
 import "./styles.scss";
 import Loader from "./components/Loader";
-import LayerSelectorPopup from "./components/LayerSelectorPopup";
 import {useState} from 'react';
 
 
@@ -44,12 +43,6 @@ const App: React.FC = () => {
             },
             onContextSearch: ctx => {
                 dispatch({type: "coordinate_search_start", value: ctx});
-            },
-            onClick: el => {
-                dispatch({type: "selectObject", value: el});
-            },
-            onLayersClick: info => {
-                dispatch({type: "clickLayer", value: info});
             }
         });
 
@@ -88,19 +81,9 @@ const App: React.FC = () => {
     }, [state.textSearchQuery]);
 
     /**
-     * Update leaflet when search results or selection changes
+     * Update leaflet when search results
      */
     React.useEffect(() => {
-        if (state.selectedObject) {
-            try {
-                LeafletUtils.updateMap({
-                    selectedObject: state.selectedObject,
-                    updateZoom: false
-                });
-            } catch {
-            }
-        }
-        else {
             try {
                 LeafletUtils.updateMap({
                     updateZoom: false,
@@ -108,21 +91,14 @@ const App: React.FC = () => {
                 });
             } catch(e) {
             }
-        }
+        
         ;
-    }, [state.searchResults, state.selectedObject]);
+    }, [state.searchResults]);
 
     /**
      * Update leaflet when clustering setting changes
      */
-    React.useEffect(() => {
-        LeafletUtils.toggleClustering(state.mapClustered);
-        LeafletUtils.updateMap({
-            searchResults: state.searchResults,
-            selectedObject: state.selectedObject,
-            updateZoom: false
-        });
-    }, [state.mapClustered]);
+    
 
     //Define useState of postcode and housenumber, and set the default value.
     const [pcode, setPcode]=useState('7311KZ')
@@ -165,13 +141,7 @@ const App: React.FC = () => {
                 <Loader loading={state.isFetching}/>
                 <div id="map"/>
             </div>           
-            <LayerSelectorPopup
-                handleClose={() => dispatch({type: "closeClickedLayer"})}
-                handleClick={el => {
-                    dispatch({type: "selectObject", value: el});
-                }}
-                options={state.clickedLayer}
-            />
+            
             <ToastContainer/>
         </section>
     );
